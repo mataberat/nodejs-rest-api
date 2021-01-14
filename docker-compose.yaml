@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  mongodb_container:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: nodejs-rest-api
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data_container:/data/db
+
+  nodejs-rest-api:
+    image: mataberat/nodejs-rest-api:latest-dev
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - mongodb_container
+    ports:
+      - '3000:3000'
+
+volumes:
+  mongodb_data_container:
+
